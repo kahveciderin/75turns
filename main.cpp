@@ -23,15 +23,16 @@ void rectangle(int y1, int x1, int y2, int x2)
 
 int maxx, maxy;
 int shop(){
-    rectangle(2, 5, maxx, maxy);
+    rectangle(2, 5, maxy-1, maxx-1);
     return 0;
 }
 int main() {
     WINDOW *win = initscr();
     maxx = getmaxx(win);
     maxy = getmaxy(win);
-    mvwprintw(win, 0, 0, "Peasants: %d (%d gold per turn +%%d bonus) x: %d", game.peasants, game.peasants * GOLD_PER_PEASANT, 0, maxx);
+    mvwprintw(win, 0, 0, "Peasants: %d (%d gold per turn +%%%d bonus) x: %d %d", game.peasants, game.peasants * GOLD_PER_PEASANT, 0, maxx, maxy);
     refresh();
+    
     char a = getch();
     if(a == 's'){
         shop();
