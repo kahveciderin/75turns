@@ -1,14 +1,28 @@
 #include <iostream>
 #include <ncurses.h>
+#include <vector>
+#include <string>
 
 #define GOLD_PER_PEASANT 40
+
 class player{
     public:
-    int turns = 0;
-    int coin = 0;
-    int peasants = 5;
-} game;
+        int turns = 0;
+        int coin = 0;
+        int peasants = 5;
 
+} game;
+class item_entry {
+    public:
+        int gold_cost;
+        std::string name;
+        void (*event)(player *gamestate, int times);
+};
+template <class T>
+std::vector<item_entry> items;
+void load_behaviour_module() {
+
+}
 void rectangle(int y1, int x1, int y2, int x2)
 {
     mvhline(y1, x1, 0, x2-x1);
@@ -20,8 +34,8 @@ void rectangle(int y1, int x1, int y2, int x2)
     mvaddch(y1, x2, ACS_URCORNER);
     mvaddch(y2, x2, ACS_LRCORNER);
 }
-
 int maxx, maxy;
+
 int shop(){
     rectangle(2, 5, maxy-1, maxx-1);
     return 0;
