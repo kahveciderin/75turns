@@ -1,17 +1,13 @@
-#include <stdio.h>
+#include <iostream>
 #include <ncurses.h>
-
 
 #define GOLD_PER_PEASANT 40
 class player{
-public:
-int turns = 0;
-int coin = 0;
-
-int peasants = 5;
-
-
-}game;
+    public:
+    int turns = 0;
+    int coin = 0;
+    int peasants = 5;
+} game;
 
 void rectangle(int y1, int x1, int y2, int x2)
 {
@@ -30,24 +26,19 @@ int shop(){
     rectangle(2, 5, maxx, maxy);
     return 0;
 }
-int main(){
-
-
-WINDOW *win = initscr();
-maxx = getmaxx(win);
-maxy = getmaxy(win);
-mvwprintw(win, 0, 0, "Peasants: %d (%d gold per turn +%%d bonus) x: %d", game.peasants, game.peasants * GOLD_PER_PEASANT, 0, maxx);
-
-refresh();
-
-char a = getch();
-
-if(a == 's'){
-    shop();
-}
-getch();
-endwin();
-return 0;
+int main() {
+    WINDOW *win = initscr();
+    maxx = getmaxx(win);
+    maxy = getmaxy(win);
+    mvwprintw(win, 0, 0, "Peasants: %d (%d gold per turn +%%d bonus) x: %d", game.peasants, game.peasants * GOLD_PER_PEASANT, 0, maxx);
+    refresh();
+    char a = getch();
+    if(a == 's'){
+        shop();
+    }
+    getch();
+    endwin();
+    return 0;
 }
 
 

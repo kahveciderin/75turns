@@ -12,7 +12,7 @@ $(C_OBJ)
 .o.cpp:
 	$(CXX) $(CPPFLAGS) $< -c -o $@
 main: $(OBJS)
-	$(CC) $< $(LINKS) -o $@
+	$(CXX) $< $(LINKS) -o $@
 	$(RM) $(OBJS)
 
 clean:
