@@ -1,16 +1,22 @@
-CC = g++
+CXX = g++
+CC = gcc
+CFLAGS  = -Wall
+CPPFLAGS= -Wall
+LINKS = -lncurses
+CPP_SRC=$(wildcard *.cpp)
+CPP_OBJ=$(CPP_SRC:.cpp=.o)
+OBJS=\
+$(CPP_OBJ)\
+$(C_OBJ)
 
-CFLAGS  = -Wall -lncurses
-
-TARGET = main
-
-all: clean $(TARGET).cpp
-
-	$(CC) $(TARGET).cpp -o $(TARGET) -lncurses $(CFLAGS)
+.o.cpp:
+	$(CXX) $(CPPFLAGS) $< -c -o $@
+main: $(OBJS)
+	$(CC) $< $(LINKS) -o $@
+	$(RM) $(OBJS)
 
 clean:
-	$(RM) $(TARGET)
+	$(RM) main $(OBJS)
 
-run: all
-	./$(TARGET)
-	make clean
+run: main
+	./main
