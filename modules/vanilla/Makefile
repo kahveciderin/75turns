@@ -2,12 +2,13 @@ PACKNAME = vanilla
 
 CXX = g++
 FILES = $(wildcard *.cpp)
-
+OBJS=$(FILES:.cpp=.so)
+%.so: %.cpp
+	g++ -c -fPIC $< -o $@
 main: $(OBJS)
-	for FILE in $(FILES); do g++ -c -fPIC $$FILE -o $${FILE%.*}.so; done
-clean:
-	for FILE in $(FILES); do rm -f $${FILE%.*}.so; done
 
+clean:
+	rm -f $(OBJS)
 cleanall: clean
 	rm -f $(PACKNAME).zip
 
