@@ -98,6 +98,6 @@ int loadpack(char *file) {
     return 0;
 }
 
-int main(){//remove
-    loadpack("vanilla.zip");
-}
+// int main(){//remove
+//     loadpack("vanilla.zip");
+// }
