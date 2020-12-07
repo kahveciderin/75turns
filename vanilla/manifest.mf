@@ -1,0 +1,6 @@
+NAME: vanilla
+VERSION: 0.0.1
+AUTHOR: returncos
+DEPENDS:
+LOAD: bank.so enemies.so peasants.so shop.so soldiers.so walls.so
+ITEMS:

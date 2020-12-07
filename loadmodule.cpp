@@ -2,9 +2,12 @@
 #include <string>
 #include <stdlib.h>
 #include <cstring>
+#include <filesystem>
+#include <iostream>
+#include <fstream>
 using namespace std;
 
-int loadmodule(){
+int loadmodule(char *filename){
 
 
 }
@@ -45,14 +48,56 @@ int loadpack(char *file) {
     zip_file *f = zip_fopen(z, name, 0);
     zip_fread(f, contents, st.size);
     zip_fclose(f);
+    printf("Pack %s v%s by %s\n",parsemanifest(contents, "NAME: "), parsemanifest(contents, "VERSION: "), parsemanifest(contents, "AUTHOR: "));
+    
+    char *load = parsemanifest(contents, "LOAD:");
+    free(contents);
+
+    
+    // Returns first token 
+    char *token = strtok(load, " ");
+  
+    char *tmpname = (char*)malloc(sizeof(char)*256);
+    while (token != NULL)
+    {
+        printf("\n\nEnabling %s...\n", token);
+        if(zip_stat(z, token, 0, &st) != 0){
+        printf("ERROR: %s not found in pack '%s', skipping!\n", token, file);
+        break;
+        }
+
+
+        char *contents = new char[st.size]; //allocate memory for the contents of manifest
+
+        //Read so file
+        zip_file *f = zip_fopen(z, token, 0);
+        zip_fread(f, contents, st.size);
+        
+        tmpnam(tmpname);
+        
+        
+        FILE * pFile;
+        pFile = fopen (tmpname, "wb");
+        fwrite (contents, sizeof(char), st.size, pFile);
+        fclose (pFile);
+        loadmodule(tmpname);
+        zip_fclose(f);
+        remove(tmpname);
+        free(contents);
+
+        printf("\n\nEnabled %s...\n", token);
+        token = strtok(NULL, " ");
+        
+    }
+    
+
 
 
     zip_close(z);
 
-    
-    printf("Pack %s v%s by %s\n",parsemanifest(contents, "NAME: "), parsemanifest(contents, "VERSION: "), parsemanifest(contents, "AUTHOR: "));
-
-    //try not to cause a memory leak
-    delete[] contents;
     return 0;
+}
+
+int main(){//remove
+    loadpack("vanilla.zip");
 }

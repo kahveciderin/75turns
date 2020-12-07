@@ -1,7 +1,7 @@
 CXX = g++
 CC = gcc
 CFLAGS  = -Wall
-CPPFLAGS= -Wall
+CPPFLAGS= -Wall -std=c++17
 LINKS = -lncurses -lzip
 CPP_SRC=$(wildcard *.cpp)
 CPP_OBJ=$(CPP_SRC:.cpp=.o)
