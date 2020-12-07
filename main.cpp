@@ -2,7 +2,7 @@
 #include <ncurses.h>
 #include <vector>
 #include <string>
-
+#include <cxxabi.h>
 #define GOLD_PER_PEASANT 40
 
 class player{
