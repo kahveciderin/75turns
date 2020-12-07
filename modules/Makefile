@@ -1,7 +1,6 @@
-FOLDERS = $(wildcard */)
-
-main:
-	for FOLDER in $(FOLDERS); do make pack -C $$FOLDER; done
-
-clean:
-	for FOLDER in $(FOLDERS); do make cleanall -C $$FOLDER; done
+FOLDERS = $(sort $(dir $(wildcard */)))
+.PHONY: pack cleanall
+pack cleanall: $(FOLDERS)
+$(FOLDERS): FORCE
+	make -C $@ $(MAKECMDGOALS)
+FORCE:
