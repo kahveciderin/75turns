@@ -5,11 +5,23 @@
 #include <filesystem>
 #include <iostream>
 #include <fstream>
+
+#include <dlfcn.h>
+
+#define MAX_MODS 64
 using namespace std;
+int index_handler = 0;
+void *handle[MAX_MODS];
 
 int loadmodule(char *filename){
+    void (*init)();
+    handle[index_handler] = dlopen (filename, RTLD_LAZY);
 
-
+    printf("%s %s %x\n", filename, dlerror(), handle[index_handler]);
+    init = (void (*)())dlsym(handle[index_handler], "init");
+    printf("%s\n", dlerror());
+    (init)();
+    index_handler++;
 }
 
 char* parsemanifest(char *manifest, char section[]){
@@ -67,7 +79,7 @@ int loadpack(char *file) {
         }
 
 
-        char *contents = new char[st.size]; //allocate memory for the contents of manifest
+        char *contents = new char[st.size]; //allocate memory for the contents of the shared library
 
         //Read so file
         zip_file *f = zip_fopen(z, token, 0);
@@ -80,9 +92,11 @@ int loadpack(char *file) {
         pFile = fopen (tmpname, "wb");
         fwrite (contents, sizeof(char), st.size, pFile);
         fclose (pFile);
+
         loadmodule(tmpname);
+        
         zip_fclose(f);
-        remove(tmpname);
+        //remove(tmpname);
         free(contents);
 
         printf("\n\nEnabled %s...\n", token);
@@ -98,6 +112,6 @@ int loadpack(char *file) {
     return 0;
 }
 
-// int main(){//remove
-//     loadpack("vanilla.zip");
-// }
+int main(){//remove
+    loadpack("vanilla.zip");
+}
