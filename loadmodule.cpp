@@ -7,24 +7,28 @@
 #include <fstream>
 
 #include <dlfcn.h>
-
+#include <cxxabi.h>
+#include <cstdio>
 #define MAX_MODS 64
 using namespace std;
 int index_handler = 0;
 void *handle[MAX_MODS];
 
-int loadmodule(char *filename){
+void loadmodule(const char *filename){
     void (*init)();
     handle[index_handler] = dlopen (filename, RTLD_LAZY);
 
-    printf("%s %s %x\n", filename, dlerror(), handle[index_handler]);
+    printf("%s %s %p\n", filename, dlerror(), handle[index_handler]);
     init = (void (*)())dlsym(handle[index_handler], "init");
-    printf("%s\n", dlerror());
+    char *err = dlerror();
+    if (err) {
+        puts(err);
+    }
     (init)();
     index_handler++;
 }
 
-char* parsemanifest(char *manifest, char section[]){
+char* parsemanifest(char *manifest, const char section[]){
     string man(manifest);
     int pos = man.find(section);
     int endpos = man.find("\n", pos);
@@ -32,7 +36,7 @@ char* parsemanifest(char *manifest, char section[]){
     man = man.substr(pos + strlen(section), endpos - (pos + strlen(section)));
     
     char *ret = (char*)malloc(sizeof(char)*128);
-    for(int i = 0; ret[i] = man.c_str()[i]; i++);
+    for(int i = 0; (ret[i] = man.c_str()[i]); i++);
 
 
     return ret;
@@ -40,7 +44,7 @@ char* parsemanifest(char *manifest, char section[]){
 
 
 }
-int loadpack(char *file) {
+int loadpack(const char file[]) {
 
     int err = 0;
     zip *z = zip_open(file, 0, &err);
@@ -69,7 +73,6 @@ int loadpack(char *file) {
     // Returns first token 
     char *token = strtok(load, " ");
   
-    char *tmpname = (char*)malloc(sizeof(char)*256);
     while (token != NULL)
     {
         printf("\n\nEnabling %s...\n", token);
@@ -85,16 +88,14 @@ int loadpack(char *file) {
         zip_file *f = zip_fopen(z, token, 0);
         zip_fread(f, contents, st.size);
         
-        tmpnam(tmpname);
         
         
         FILE * pFile;
-        pFile = fopen (tmpname, "wb");
-        fwrite (contents, sizeof(char), st.size, pFile);
+        pFile = fopen("./tmpfile.tmp", "wb");
+        fwrite(contents, sizeof(char), st.size, pFile);
         fclose (pFile);
-
-        loadmodule(tmpname);
-        
+        loadmodule("./tmpfile.tmp");
+        remove("./tmpfile.tmp");
         zip_fclose(f);
         //remove(tmpname);
         free(contents);

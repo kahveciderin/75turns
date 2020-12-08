@@ -4,7 +4,7 @@ CXX = g++
 FILES = $(wildcard *.cpp)
 OBJS=$(FILES:.cpp=.so)
 %.so: %.cpp
-	g++ -c -fPIC $< -o $@
+	g++ -fPIC -shared $< -o $@
 main: $(OBJS)
 
 clean:
@@ -14,4 +14,5 @@ cleanall: clean
 
 pack: main
 	zip $(PACKNAME) manifest.mf *.so
+	cp $(PACKNAME).zip ../..
 	make clean
