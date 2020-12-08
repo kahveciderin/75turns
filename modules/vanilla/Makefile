@@ -4,7 +4,7 @@ CXX = g++
 FILES = $(wildcard *.cpp)
 OBJS=$(FILES:.cpp=.so)
 %.so: %.cpp
-	g++ -fPIC -shared $< -o $@
+	$(CXX) -fPIC  -I$(MODAPI_INCLUDE) -shared $< -o $@ $(MODLINKS)
 main: $(OBJS)
 
 clean:
