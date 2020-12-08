@@ -15,4 +15,4 @@ cleanall: clean
 pack: main
 	zip $(PACKNAME) manifest.mf *.so
 	cp $(PACKNAME).zip ../..
-	make clean
+	$(MAKE) clean
