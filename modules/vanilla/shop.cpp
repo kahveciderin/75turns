@@ -1,4 +1,4 @@
-#include "api.h"
+#include <modapi.hpp>
 #include <stdio.h>
 apicall void init(){    
     printf("shop");

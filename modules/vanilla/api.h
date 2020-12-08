@@ -1,1 +1,0 @@
-#define apicall extern "C"
