@@ -3,7 +3,7 @@ PACKNAME = vanilla
 CXX = g++
 FILES = $(wildcard *.cpp)
 OBJS=$(FILES:.cpp=.so)
-%.so: %.cpp
++%.so: %.cpp
 	g++ -fPIC -shared $< -o $@
 main: $(OBJS)
 
