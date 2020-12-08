@@ -1,4 +1,5 @@
+#include "api.h"
 #include <stdio.h>
-extern "C" void init(){    
+apicall void init(){    
     printf("peasants");
 }

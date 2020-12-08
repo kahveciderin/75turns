@@ -12,13 +12,13 @@
 #define MAX_MODS 64
 using namespace std;
 int index_handler = 0;
-void *handle[MAX_MODS];
+void **handle;
 
 void loadmodule(const char *filename){
     void (*init)();
-    handle[index_handler] = dlopen (filename, RTLD_LAZY);
+    handle[index_handler] = dlopen (filename, RTLD_NOW);
 
-    printf("%s %s %p\n", filename, dlerror(), handle[index_handler]);
+    //printf("%d %s %s %p\n",index_handler ,filename, dlerror(), handle[index_handler]);
     init = (void (*)())dlsym(handle[index_handler], "init");
     char *err = dlerror();
     if (err) {
@@ -65,7 +65,8 @@ int loadpack(const char file[]) {
     zip_fread(f, contents, st.size);
     zip_fclose(f);
     printf("Pack %s v%s by %s\n",parsemanifest(contents, "NAME: "), parsemanifest(contents, "VERSION: "), parsemanifest(contents, "AUTHOR: "));
-    
+    printf("%d\n\n", atoi(parsemanifest(contents, "COUNT: ")));
+    handle = new void*[atoi(parsemanifest(contents, "COUNT: "))];
     char *load = parsemanifest(contents, "LOAD:");
     free(contents);
 
@@ -89,15 +90,15 @@ int loadpack(const char file[]) {
         zip_fread(f, contents, st.size);
         
         
-        
+        char *tmpname = new char[256];
+        tmpnam(tmpname);
         FILE * pFile;
-        pFile = fopen("./tmpfile.tmp", "wb");
+        pFile = fopen(tmpname, "wb");
         fwrite(contents, sizeof(char), st.size, pFile);
         fclose (pFile);
-        loadmodule("./tmpfile.tmp");
-        remove("./tmpfile.tmp");
+        loadmodule(tmpname);
+        remove(tmpname);
         zip_fclose(f);
-        //remove(tmpname);
         free(contents);
 
         printf("\n\nEnabled %s...\n", token);
@@ -111,8 +112,4 @@ int loadpack(const char file[]) {
     zip_close(z);
 
     return 0;
-}
-
-int main(){//remove
-    loadpack("vanilla.zip");
 }
