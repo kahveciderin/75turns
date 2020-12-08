@@ -1,3 +1,4 @@
+#include "loadmodule.h"
 #include <zip.h>
 #include <string>
 #include <stdlib.h>
@@ -6,13 +7,16 @@
 #include <iostream>
 #include <fstream>
 
+
 #include <dlfcn.h>
 #include <cxxabi.h>
 #include <cstdio>
 #define MAX_MODS 64
 using namespace std;
+
 int index_handler = 0;
 void **handle;
+
 
 void loadmodule(const char *filename){
     void (*init)();
