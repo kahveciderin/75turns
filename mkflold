@@ -1,0 +1,23 @@
+CXX = g++
+CC = gcc
+CFLAGS  = -Wall -g -c
+CPPFLAGS= -Wall -std=c++17 -g -c
+LINKS = -lncurses -lzip -ldl
+CPP_SRC=$(wildcard *.cpp)
+CPP_OBJ=$(CPP_SRC:.cpp=.o)
+OBJS=\
+$(CPP_OBJ)\
+$(C_OBJ)
+%.o: %.c
+	$(CC) $(CFLAGS) $< -o $@
+%.o: %.cpp
+	$(CXX) $(CPPFLAGS) $< -o $@
+main: $(OBJS)
+	$(CXX) $< $(LINKS) -o $@
+	$(RM) $(OBJS)
+
+clean:
+	$(RM) main $(OBJS)
+
+run: main
+	./main
