@@ -1,4 +1,4 @@
 #include <stdio.h>
-void init(){    
+extern "C" void init(){    
     printf("bank");
 }

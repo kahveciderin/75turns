@@ -17,9 +17,9 @@ int loadmodule(char *filename){
     void (*init)();
     handle[index_handler] = dlopen (filename, RTLD_LAZY);
 
-    printf("%s %s %x\n", filename, dlerror(), handle[index_handler]);
+    //printf("%s %s %x\n", filename, dlerror(), handle[index_handler]);
     init = (void (*)())dlsym(handle[index_handler], "init");
-    printf("%s\n", dlerror());
+    //printf("%s\n", dlerror());
     (init)();
     index_handler++;
 }

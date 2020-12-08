@@ -4,7 +4,7 @@ CXX = g++
 FILES = $(wildcard *.cpp)
 OBJS=$(FILES:.cpp=.so)
 %.so: %.cpp
-	g++ -c -fPIC $< -o $@
+	g++ -shared $< -o $@
 main: $(OBJS)
 
 clean:
