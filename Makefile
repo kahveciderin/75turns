@@ -12,12 +12,12 @@ $(C_OBJ)
 	$(CC) $(CFLAGS) $< -c -o $@
 %.o: %.cpp
 	$(CXX) $(CPPFLAGS) $< -c -o $@
-main: $(OBJS)
+75turns: $(OBJS)
 	$(CXX) $< $(LINKS) -o $@
 	$(RM) $(OBJS)
 
 clean:
 	$(RM) main $(OBJS)
 
-run: main
-	./main
+run: 75turns
+	./75turns
