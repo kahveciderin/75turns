@@ -17,3 +17,5 @@ clean:
 
 run: 75turns
 	./75turns
+modules:
+	$(MAKE) -C modules

@@ -8,3 +8,5 @@ modapi.a: $(OBJS)
 	ar rvs $@ $^
 %.o: %.cpp
 	$(CXX) -fPIC $(CPPFLAGS) -c $< -o $@
+clean:
+	rm -f $(OBJS)
